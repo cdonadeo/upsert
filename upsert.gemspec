@@ -23,7 +23,16 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rspec-expectations'
   gem.add_development_dependency 'rspec-mocks'
 
-  gem.add_development_dependency 'activerecord', '~>3'
+  # Starting in Ruby 2.4 and JRuby 9.2.0.0, numeric values are classed as
+  # Integer instead of Fixnum or Bignum. Arel needs to be version 6.0.4 to
+  # handle this.  Tests fail otherwise.
+  if RUBY_VERSION > '2.4'
+    gem.add_development_dependency 'activerecord', '~>4'
+    gem.add_development_dependency 'arel', '>=6.0.4'
+  else
+    gem.add_development_dependency 'activerecord', '~>3'
+  end
+
   gem.add_development_dependency 'active_record_inline_schema'
   gem.add_development_dependency 'yard'
   gem.add_development_dependency 'pry'
